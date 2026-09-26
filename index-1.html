@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shubh Labh Digital</title>
+<style>
+:root{
+  --maroon:#5c1016; --maroon-d:#2c0a0c; --saffron:#e8933a; --gold:#d4a24c;
+  --cream:#f7ecd9; --card:#fffaf1; --brown:#3a2418; --glass:rgba(255,255,255,.08);
+}
+:root:not([data-theme="light"]){ --bg:#25090c; --bg2:#3a0f13; --txt:#f3e6d6; --cardbg:#3a2018; --cardbrd:#8a6a34; }
+:root[data-theme="light"]{ --bg:#fbf3e6; --bg2:#f2e2c8; --txt:#3a2418; --cardbg:#fffaf1; --cardbrd:#d4a24c; }
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:"Noto Sans Devanagari","Segoe UI",sans-serif; background:linear-gradient(180deg,var(--bg),var(--bg2)); color:var(--txt); min-height:100vh; padding-bottom:calc(80px + env(safe-area-inset-bottom,0px)); overflow-x:hidden; transition:background .3s;}
+button{font-family:inherit; cursor:pointer;}
+.tap{transition:transform .15s ease;}
+.tap:active{transform:scale(.94);}
+header{position:sticky; top:0; z-index:40; display:flex; align-items:center; gap:12px; padding:14px 18px; padding-top:calc(14px + env(safe-area-inset-top,0px)); background:rgba(20,6,7,.55); backdrop-filter:blur(10px); border-bottom:1px solid rgba(212,162,76,.25);}
+.logo-diya{font-size:26px; filter:drop-shadow(0 0 8px var(--saffron));}
+.brand h1{font-size:17px; font-weight:700; color:var(--cream);}
+.brand p{font-size:11.5px; color:var(--gold);}
+.settings-ic{margin-left:auto; width:36px; height:36px; border-radius:50%; background:var(--glass); border:1px solid rgba(212,162,76,.4); display:flex; align-items:center; justify-content:center; color:var(--cream); font-size:16px;}
+.screen{display:none; padding:20px 18px 10px; max-width:640px; margin:0 auto; animation:fadeIn .35s ease;}
+.screen.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+.hero{position:relative; background:radial-gradient(circle at 30% 20%,var(--saffron),var(--maroon) 65%); border-radius:22px; padding:28px 22px; color:var(--cream); overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.35);}
+.hero svg.mandala{position:absolute; right:-30px; top:-30px; opacity:.15; width:160px; height:160px;}
+.diya-glow{position:absolute; right:16px; top:14px; font-size:46px; animation:glow 2.4s ease-in-out infinite;}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 6px #ffcf7a);} 50%{filter:drop-shadow(0 0 18px #ffcf7a);}}
+.hero h2{font-size:22px; margin-bottom:8px; position:relative;}
+.hero p{font-size:13.5px; opacity:.92; max-width:76%; margin-bottom:18px; position:relative;}
+.btn{border:none; border-radius:30px; padding:12px 20px; font-size:14px; font-weight:700; display:inline-block; text-decoration:none; text-align:center;}
+.btn-primary{background:var(--gold); color:var(--maroon-d);}
+.btn-outline{background:transparent; border:1.5px solid var(--cream); color:var(--cream);}
+.btn-row{display:flex; gap:10px; flex-wrap:wrap; position:relative;}
+.grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-top:20px;}
+.card{background:var(--cardbg); border:1px solid var(--cardbrd); border-radius:20px; box-shadow:0 6px 18px rgba(0,0,0,.25);}
+.fcard{padding:14px 6px; text-align:center;}
+.fcard .ic{font-size:21px; display:block; margin-bottom:6px;}
+.fcard span{font-size:11.5px; font-weight:600;}
+.q-card{padding:20px; margin-top:18px; position:relative;}
+.q-card h3{font-size:13px; color:var(--gold); margin-bottom:8px;}
+.q-card p{font-size:15.5px; font-weight:500; min-height:48px;}
+.refresh-ic{position:absolute; top:14px; right:14px; background:none; border:none; font-size:17px; color:var(--gold);}
+.prog-card{padding:18px; margin-top:16px;}
+.prog-card h3{font-size:14px; margin-bottom:10px; color:var(--gold);}
+.task{display:flex; align-items:center; gap:10px; font-size:13.5px; padding:6px 0;}
+.task .dot{width:20px; height:20px; border-radius:50%; border:2px solid var(--gold); display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0;}
+.task.done .dot{background:var(--gold); color:var(--maroon-d);}
+.task.done span{text-decoration:line-through; opacity:.7;}
+h2.h-title{font-size:21px; color:var(--gold); text-align:center;}
+p.h-sub{text-align:center; font-size:13px; color:var(--txt); opacity:.7; margin-top:4px; margin-bottom:20px;}
+.carousel-card{padding:24px 20px; text-align:center; min-height:150px; display:flex; flex-direction:column; justify-content:center;}
+.carousel-card p{font-size:16.5px; font-weight:500;}
+.carousel-actions{display:flex; justify-content:space-between; align-items:center; margin-top:16px;}
+.icbtn{background:var(--card); border:1px solid var(--cardbrd); width:42px; height:42px; border-radius:50%; font-size:18px; display:flex; align-items:center; justify-content:center; color:var(--txt);}
+.icbtn.liked{background:var(--maroon); color:#fff; border-color:var(--maroon);}
+.counter-badge{text-align:center; font-size:13px; color:var(--gold); font-weight:700;}
+.nav-row{display:flex; justify-content:center; gap:10px;}
+.fav-toggle{display:block; margin:14px auto 0; background:none; border:1.5px solid var(--gold); color:var(--gold); border-radius:30px; padding:9px 18px; font-size:13px;}
+.acc{border-radius:18px; margin-bottom:14px; overflow:hidden;}
+.acc-head{padding:16px; display:flex; justify-content:space-between; align-items:center; font-weight:700; color:var(--gold); font-size:14.5px;}
+.acc-head .chk{font-size:13px; color:#7bc47f;}
+.acc-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+.acc.open .acc-body{max-height:900px;}
+.acc-inner{padding:0 16px 16px;}
+.acc-inner h4{font-size:12.5px; color:var(--gold); margin:10px 0 4px;}
+.acc-inner ol{padding-left:18px; font-size:14px;}
+.acc-inner .mantra{background:rgba(212,162,76,.15); border-radius:8px; padding:8px 12px; font-weight:600; margin-top:8px; font-size:14px;}
+.acc-inner .done-btn{margin-top:12px; width:100%;}
+.disclaimer{font-size:11.5px; text-align:center; opacity:.65; margin-top:16px; padding:0 6px;}
+.mantra-top{text-align:center; font-size:15px; font-weight:700; color:var(--gold); margin-bottom:6px;}
+.mantra-select{display:block; width:100%; padding:11px; border-radius:12px; border:1px solid var(--cardbrd); background:var(--cardbg); color:var(--txt); font-size:14px; margin-bottom:16px;}
+.ring-wrap{display:flex; justify-content:center; margin:8px 0 18px; position:relative;}
+.om-bg{position:absolute; font-size:120px; opacity:.06; color:var(--gold); top:50%; left:50%; transform:translate(-50%,-50%);}
+.jaap-main-btn{display:block; margin:0 auto 18px; width:100%; padding:16px; font-size:16px; border-radius:18px;}
+.jaap-btns{display:flex; justify-content:center; gap:16px;}
+.iconround{width:52px; height:52px; border-radius:50%; border:1px solid var(--cardbrd); background:var(--cardbg); font-size:20px; color:var(--txt); display:flex; align-items:center; justify-content:center;}
+.milestone{text-align:center; margin-top:14px; font-size:13.5px; color:var(--gold); font-weight:700; min-height:18px;}
+.mini-cards{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px;}
+.mini-card{padding:14px; text-align:center;}
+.mini-card b{font-size:20px; display:block; color:var(--gold);}
+.mini-card span{font-size:12px; opacity:.75;}
+.cta-card{padding:18px; text-align:center; margin-top:18px;}
+.cta-card p{font-size:13.5px; margin-bottom:10px;}
+.pcard{padding:20px; text-align:center; margin-bottom:16px;}
+.pcard .cover{width:64px; height:64px; margin:0 auto 10px; border-radius:16px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,.25); display:flex; align-items:center; justify-content:center;}
+.pcard h3{font-size:15px; margin-bottom:4px; color:var(--gold);}
+.pcard .price{font-size:19px; font-weight:700;}
+.pcard .benefits{font-size:12.5px; opacity:.85; margin:8px 0; text-align:left; padding-left:16px;}
+.pcard .soon{font-size:11.5px; opacity:.6; margin-bottom:6px;}
+.pcard .details{max-height:0; overflow:hidden; transition:max-height .3s ease; font-size:13px; text-align:left; margin-top:10px;}
+.pcard.open .details{max-height:200px;}
+.pcard .btnrow{display:flex; gap:8px; margin-top:12px;}
+.pcard .btnrow button, .pcard .btnrow a{flex:1;}
+.store-hi{padding:22px; text-align:center; margin-top:8px;}
+.store-hi h3{color:var(--gold); font-size:16px; margin-bottom:6px;}
+.store-hi p{font-size:13px; opacity:.85; margin-bottom:14px;}
+.story-art{position:relative; margin:-4px -4px 14px; border-radius:16px; overflow:hidden; background:radial-gradient(circle at 50% 30%,#3a1418,#20090b); border:1.5px solid var(--gold); box-shadow:inset 0 0 0 4px rgba(212,162,76,.15), 0 6px 16px rgba(0,0,0,.35);}
+.story-art::before,.story-art::after{content:""; position:absolute; top:6px; width:22px; height:22px; border-top:2px solid var(--gold); opacity:.6;}
+.story-art::before{left:6px; border-left:2px solid var(--gold);}
+.story-art::after{right:6px; border-right:2px solid var(--gold);}
+.story-card{padding:20px; margin-bottom:16px;}
+.story-card h3{color:var(--gold); font-size:16px; margin-bottom:10px;}
+.story-card p{font-size:14px; margin-bottom:8px; opacity:.92;}
+.story-shiksha{background:rgba(212,162,76,.12); border-radius:10px; padding:10px 12px; font-size:13.5px; margin:10px 0; font-weight:600;}
+.story-actions{display:flex; gap:10px; margin-top:10px;}
+.profile-card{padding:22px; text-align:center; margin-bottom:18px;}
+.profile-card .pic{font-size:40px; margin-bottom:8px;}
+.profile-card h3{color:var(--gold); font-size:16px;}
+.profile-card p{font-size:12.5px; opacity:.7; margin-top:4px;}
+.connect-btns{display:flex; flex-direction:column; gap:10px;}
+.final-msg{text-align:center; font-size:13.5px; opacity:.8; margin-top:18px;}
+nav.bottom{position:fixed; bottom:10px; left:12px; right:12px; display:flex; background:rgba(20,6,7,.65); backdrop-filter:blur(14px); border:1px solid rgba(212,162,76,.25); border-radius:22px; z-index:50; box-shadow:0 8px 24px rgba(0,0,0,.35);}
+nav.bottom button{flex:1; background:none; border:none; padding:10px 2px 9px; font-size:11px; color:#c9a98f; display:flex; flex-direction:column; align-items:center; gap:3px;}
+nav.bottom button.active{color:var(--gold); font-weight:700;}
+nav.bottom .ic{font-size:19px;}
+nav.bottom .jaap-tab.active .ic{filter:drop-shadow(0 0 8px var(--saffron));}
+.sheet-overlay{position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:80; display:none; align-items:flex-end; justify-content:center;}
+.sheet-overlay.show{display:flex;}
+.sheet{background:var(--cardbg); width:100%; max-width:640px; border-radius:24px 24px 0 0; padding:20px 20px calc(24px + env(safe-area-inset-bottom,0px)); transform:translateY(100%); transition:transform .3s ease; max-height:80vh; overflow-y:auto;}
+.sheet-overlay.show .sheet{transform:translateY(0);}
+.sheet-handle{width:40px; height:4px; background:var(--cardbrd); border-radius:3px; margin:0 auto 16px;}
+.sheet h3{font-size:16px; margin-bottom:14px; color:var(--gold);}
+.sheet-row{display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-bottom:1px solid rgba(212,162,76,.15); font-size:14px;}
+.sheet-menu-btn{display:block; width:100%; text-align:left; background:none; border:none; padding:14px 4px; font-size:15px; color:var(--txt); border-bottom:1px solid rgba(212,162,76,.15);}
+.toggle{width:46px; height:26px; background:var(--cardbrd); border-radius:20px; position:relative; border:none;}
+.toggle .dot{width:20px; height:20px; background:#fff; border-radius:50%; position:absolute; top:3px; left:3px; transition:left .2s;}
+.toggle.on{background:var(--maroon);}
+.toggle.on .dot{left:23px;}
+.sheet-btn{width:100%; margin-top:14px; padding:12px; border-radius:14px; border:none; background:rgba(220,80,80,.15); color:#e07a7a; font-weight:700;}
+.modal-overlay{position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:90; display:none; align-items:center; justify-content:center; padding:24px;}
+.modal-overlay.show{display:flex;}
+.modal{background:var(--cardbg); border:1px solid var(--cardbrd); border-radius:20px; padding:24px; max-width:340px; text-align:center;}
+.modal p{font-size:15px; margin-bottom:18px;}
+.modal .mrow{display:flex; gap:10px;}
+.modal .mrow button{flex:1;}
+.toast{position:fixed; bottom:106px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--maroon-d); color:#fff; padding:12px 20px; border-radius:30px; font-size:13.5px; z-index:100; opacity:0; transition:all .3s ease; pointer-events:none; white-space:nowrap;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+.petal{position:fixed; top:-20px; font-size:20px; z-index:120; animation:fall linear forwards; pointer-events:none;}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg); opacity:.2;}}
+.sparkle{position:fixed; width:3px; height:3px; background:var(--gold); border-radius:50%; opacity:.5; animation:twinkle 3s ease-in-out infinite; pointer-events:none; z-index:1;}
+@keyframes twinkle{0%,100%{opacity:.15;} 50%{opacity:.7;}}
+</style>
+</head>
+<body>
+
+<div id="sparkles"></div>
+
+<header>
+  <div class="logo-diya"><svg viewBox="0 0 28 28" width="26" height="26"><ellipse cx="14" cy="19" rx="10" ry="3.4" fill="#8a2f18"/><path d="M4 17 Q14 25 24 17 Q21 13 14 13 Q7 13 4 17Z" fill="var(--gold)"/><path d="M14 5 C11 9 10 12 14 16 C18 12 17 9 14 5Z" fill="#ffcf7a"/></svg></div>
+  <div class="brand"><h1>Shubh Labh Digital</h1><p>आपकी दैनिक भक्ति यात्रा</p></div>
+  <button class="settings-ic tap" onclick="openSettings()">⚙️</button>
+</header>
+
+<!-- HOME -->
+<div class="screen active" id="scr-home">
+  <div class="hero">
+    <svg class="mandala" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="1"/><circle cx="50" cy="50" r="32" fill="none" stroke="#fff" stroke-width="1"/><circle cx="50" cy="50" r="18" fill="none" stroke="#fff" stroke-width="1"/></svg>
+    <div class="diya-glow">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <ellipse cx="35" cy="52" rx="26" ry="9" fill="#8a2f18"/>
+        <path d="M9 48 Q35 66 61 48 Q56 40 35 40 Q14 40 9 48 Z" fill="#d4a24c"/>
+        <path d="M35 40 Q22 44 22 50 Q22 56 35 56 Q48 56 48 50 Q48 44 35 40 Z" fill="#e8933a" opacity=".9"/>
+        <path id="flame" d="M35 12 C29 22 26 28 35 40 C44 28 41 22 35 12 Z" fill="#ffcf7a">
+          <animate attributeName="d" dur="1.6s" repeatCount="indefinite"
+            values="M35 12 C29 22 26 28 35 40 C44 28 41 22 35 12 Z;
+                    M35 15 C30 24 27 29 35 40 C43 29 40 24 35 15 Z;
+                    M35 12 C29 22 26 28 35 40 C44 28 41 22 35 12 Z"/>
+        </path>
+        <path d="M35 20 C32 26 31 30 35 36 C39 30 38 26 35 20 Z" fill="#ff9d4d" opacity=".9"/>
+      </svg>
+    </div>
+    <h2>आज की शुभ शुरुआत</h2>
+    <p>भक्ति और सकारात्मक ऊर्जा के साथ अपने दिन की शुरुआत करें।</p>
+    <div class="btn-row">
+      <button class="btn btn-primary tap" onclick="goScreen('gyaan')">आज का ज्ञान</button>
+      <button class="btn btn-outline tap" onclick="goScreen('jaap')">जाप शुरू करें</button>
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="card fcard tap" onclick="goScreen('gyaan')"><span class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="var(--gold)" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="4" r="1.6"/><circle cx="19" cy="8" r="1.6"/><circle cx="19" cy="16" r="1.6"/><circle cx="12" cy="20" r="1.6"/><circle cx="5" cy="16" r="1.6"/><circle cx="5" cy="8" r="1.6"/></svg></span><span>भक्ति ज्ञान</span></div>
+    <div class="card fcard tap" onclick="goScreen('vidhi')"><span class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="var(--gold)" stroke-width="1.6"><path d="M12 3v6M8 9h8l2 11H6L8 9z"/><path d="M6 20h12"/></svg></span><span>पूजा विधि</span></div>
+    <div class="card fcard tap" onclick="goScreen('jaap')"><span class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="var(--gold)" stroke-width="1.6"><path d="M12 3a6 6 0 0 1 6 6v4l1.5 3.5H4.5L6 13V9a6 6 0 0 1 6-6z"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0"/></svg></span><span>मंत्र जाप</span></div>
+    <div class="card fcard tap" onclick="goScreen('katha')"><span class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="var(--gold)" stroke-width="1.6"><path d="M4 5c3-2 6-2 8 0v14c-2-2-5-2-8 0V5z"/><path d="M20 5c-3-2-6-2-8 0v14c2-2 5-2 8 0V5z"/></svg></span><span>धार्मिक कथाएँ</span></div>
+    <div class="card fcard tap" onclick="goScreen('pdf')"><span class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="var(--gold)" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span>PDF गाइड</span></div>
+    <div class="card fcard tap" onclick="goScreen('connect')"><span class="ic"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="var(--gold)" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-8.9 8.4 8.5 8.5 0 0 1-3.8-.9L4 20l1-4.2a8.4 8.4 0 0 1-1-4 8.5 8.5 0 0 1 17 -.3z"/></svg></span><span>हमसे जुड़ें</span></div>
+  </div>
+
+  <div class="card q-card">
+    <h3>आज का विचार</h3>
+    <button class="refresh-ic tap" onclick="refreshHomeQuote()">🔄</button>
+    <p id="homeQuote"></p>
+  </div>
+
+  <div class="card prog-card">
+    <h3>आज की साधना</h3>
+    <div class="task" id="task-read"><div class="dot">1</div><span>आज का विचार पढ़ें</span></div>
+    <div class="task" id="task-vidhi"><div class="dot">2</div><span>एक पूजा विधि देखें</span></div>
+    <div class="task" id="task-jaap"><div class="dot">3</div><span>कम से कम 11 जाप करें</span></div>
+    <div class="task" id="task-pdf"><div class="dot">4</div><span>PDF गाइड देखें</span></div>
+  </div>
+</div>
+
+<!-- GYAAN -->
+<div class="screen" id="scr-gyaan">
+  <h2 class="h-title">भक्ति ज्ञान</h2>
+  <p class="h-sub">हर दिन एक सकारात्मक विचार</p>
+  <div class="card carousel-card">
+    <p id="gyaanQuote"></p>
+    <div class="carousel-actions">
+      <button class="icbtn tap" id="likeBtn" onclick="toggleLike()">♡</button>
+      <span class="counter-badge" id="gyaanCounter"></span>
+      <button class="icbtn tap" onclick="shareQuote()">⤴</button>
+    </div>
+  </div>
+  <div class="nav-row" style="margin-top:16px;">
+    <button class="btn btn-outline tap" style="color:var(--gold); border-color:var(--gold);" onclick="prevQuote()">पिछला</button>
+    <button class="btn btn-primary tap" onclick="nextQuote()">अगला</button>
+  </div>
+  <button class="fav-toggle tap" id="favToggleBtn" onclick="toggleFavView()">मेरे पसंदीदा विचार</button>
+</div>
+
+<!-- VIDHI -->
+<div class="screen" id="scr-vidhi">
+  <h2 class="h-title">सरल पूजा विधियाँ</h2>
+  <p class="h-sub">घर पर श्रद्धा से की जाने वाली आसान पूजा विधियाँ</p>
+  <div id="accWrap"></div>
+  <div class="card cta-card">
+    <a class="btn btn-primary tap" href="https://kreato.co.in/subhlabhdigital" target="_blank" rel="noopener noreferrer">विस्तृत पूजा विधि PDF में प्राप्त करें</a>
+  </div>
+  <p class="disclaimer">यह सामान्य मार्गदर्शन है। अपनी पारिवारिक परंपरा और स्थानीय रीति-रिवाजों का सम्मान करें।</p>
+</div>
+
+<!-- JAAP -->
+<div class="screen" id="scr-jaap">
+  <h2 class="h-title">मंत्र जाप</h2>
+  <p class="h-sub">श्रद्धा के साथ अपना जाप गिनें</p>
+  <div class="mantra-top" id="mantraTop"></div>
+  <select id="mantraSelect" class="mantra-select" onchange="changeMantra()">
+    <option>ॐ नमः शिवाय</option>
+    <option>ॐ गं गणपतये नमः</option>
+    <option>ॐ श्रीं महालक्ष्म्यै नमः</option>
+    <option>ॐ हनुमते नमः</option>
+    <option>ॐ सूर्याय नमः</option>
+  </select>
+  <div class="ring-wrap">
+    <div class="om-bg">ॐ</div>
+    <svg width="210" height="210" viewBox="0 0 210 210">
+      <circle cx="105" cy="105" r="90" fill="none" stroke="rgba(212,162,76,.2)" stroke-width="14"/>
+      <circle id="ring" cx="105" cy="105" r="90" fill="none" stroke="#d4a24c" stroke-width="14" stroke-linecap="round" transform="rotate(-90 105 105)" style="transition:stroke-dashoffset .3s ease;"/>
+      <text id="countText" x="105" y="100" text-anchor="middle" font-size="42" font-weight="700" fill="#d4a24c">0</text>
+      <text x="105" y="126" text-anchor="middle" font-size="13" fill="#c9a98f">/ 108</text>
+    </svg>
+  </div>
+  <button class="btn btn-primary tap jaap-main-btn" onclick="doJaap()">जाप करें 🔔</button>
+  <div class="jaap-btns">
+    <button class="iconround tap" onclick="changeCount(-1)">−</button>
+    <button class="iconround tap" onclick="askReset()">⟲</button>
+  </div>
+  <div class="milestone" id="milestoneMsg"></div>
+  <div class="mini-cards">
+    <div class="card mini-card"><b id="goalPct">0%</b><span>आज का लक्ष्य: 108</span></div>
+    <div class="card mini-card"><b id="todayCount">0</b><span>आज का कुल जाप</span></div>
+  </div>
+  <div class="card cta-card">
+    <a class="btn btn-primary tap" href="https://kreato.co.in/subhlabhdigital" target="_blank" rel="noopener noreferrer">मंत्र संग्रह PDF प्राप्त करें</a>
+  </div>
+</div>
+
+<!-- KATHA -->
+<div class="screen" id="scr-katha">
+  <h2 class="h-title">धार्मिक कथाएँ</h2>
+  <p class="h-sub">संक्षिप्त कथाएँ और प्रेरक संदेश</p>
+  <div id="storyWrap"></div>
+</div>
+
+<!-- PDF -->
+<div class="screen" id="scr-pdf">
+  <h2 class="h-title">भक्ति PDF गाइड</h2>
+  <p class="h-sub">अपनी साधना को सरल और नियमित बनाने के लिए</p>
+  <div id="pdfWrap"></div>
+  <div class="card store-hi">
+    <h3>सभी भक्ति PDF गाइड एक ही जगह</h3>
+    <p>अपनी पसंद की गाइड चुनें और Kreato Store पर सुरक्षित रूप से प्राप्त करें।</p>
+    <a class="btn btn-primary tap" href="https://kreato.co.in/subhlabhdigital" target="_blank" rel="noopener noreferrer">पूरा PDF Store देखें</a>
+    <p style="font-size:11.5px; opacity:.65; margin-top:8px;">PDF प्राप्त करने के लिए Kreato Store पर जाएँ।</p>
+  </div>
+</div>
+
+<!-- CONNECT -->
+<div class="screen" id="scr-connect">
+  <h2 class="h-title">हमसे जुड़ें</h2>
+  <p class="h-sub">भक्ति सामग्री, नए PDF गाइड और दैनिक अपडेट के लिए हमारे साथ जुड़े रहें।</p>
+  <div class="card profile-card">
+    <div class="pic"><svg viewBox="0 0 28 28" width="40" height="40" style="margin:0 auto;"><ellipse cx="14" cy="19" rx="10" ry="3.4" fill="#8a2f18"/><path d="M4 17 Q14 25 24 17 Q21 13 14 13 Q7 13 4 17Z" fill="var(--gold)"/><path d="M14 5 C11 9 10 12 14 16 C18 12 17 9 14 5Z" fill="#ffcf7a"/></svg></div>
+    <h3>Shubh Labh Digital</h3>
+    <p>भक्ति, ज्ञान और साधना — हर दिन</p>
+  </div>
+  <div class="connect-btns">
+    <a class="btn btn-primary tap" href="https://wa.me/919044593654" target="_blank" rel="noopener noreferrer">WhatsApp पर जुड़ें</a>
+    <a class="btn btn-outline tap" style="color:var(--gold); border-color:var(--gold);" href="https://www.instagram.com/shubhlabh.digital?stkn=ZWZqbjd3MXFpbm1q" target="_blank" rel="noopener noreferrer">Instagram Follow करें</a>
+    <button class="btn btn-outline tap" style="color:var(--gold); border-color:var(--gold);" onclick="shareApp()">App शेयर करें</button>
+  </div>
+  <p class="final-msg">आपकी भक्ति यात्रा मंगलमय हो। 🙏</p>
+  <p class="disclaimer">यह ऐप सामान्य भक्ति एवं सांस्कृतिक जानकारी के लिए है। अपनी पारिवारिक परंपराओं और स्थानीय रीति-रिवाजों का सम्मान करें।</p>
+</div>
+
+<nav class="bottom">
+  <button data-s="home" class="active tap" onclick="goScreen('home')"><span class="ic">🏠</span>होम</button>
+  <button data-s="gyaan" class="tap" onclick="goScreen('gyaan')"><span class="ic">📿</span>ज्ञान</button>
+  <button data-s="vidhi" class="tap" onclick="goScreen('vidhi')"><span class="ic">🙏</span>विधि</button>
+  <button data-s="jaap" class="tap jaap-tab" onclick="goScreen('jaap')"><span class="ic">🔔</span>जाप</button>
+  <button data-s="more" class="tap" onclick="openMore()"><span class="ic">⋯</span>और</button>
+</nav>
+
+<!-- MORE SHEET -->
+<div class="sheet-overlay" id="moreSheet" onclick="closeSheetBGid(event,'moreSheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3>और विकल्प</h3>
+    <button class="sheet-menu-btn tap" onclick="closeSheet('moreSheet'); goScreen('katha')">📜 कथाएँ</button>
+    <button class="sheet-menu-btn tap" onclick="closeSheet('moreSheet'); goScreen('pdf')">📖 PDF गाइड</button>
+    <button class="sheet-menu-btn tap" onclick="closeSheet('moreSheet'); goScreen('connect')">💬 हमसे जुड़ें</button>
+  </div>
+</div>
+
+<!-- SETTINGS SHEET -->
+<div class="sheet-overlay" id="settingsSheet" onclick="closeSheetBGid(event,'settingsSheet')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <h3>सेटिंग्स</h3>
+    <div class="sheet-row">डार्क / लाइट मोड <button class="toggle" id="themeToggle" onclick="toggleTheme()"><span class="dot"></span></button></div>
+    <div class="sheet-row">पसंदीदा विचार <span id="cntLiked">0</span></div>
+    <div class="sheet-row">बुकमार्क कथाएँ <span id="cntBookmarks">0</span></div>
+    <div class="sheet-row">आज का जाप <span id="cntJaap">0</span></div>
+    <div class="sheet-row" onclick="showAbout()" style="cursor:pointer;">Shubh Labh Digital के बारे में <span>›</span></div>
+    <button class="sheet-btn tap" onclick="askResetData()">ऐप डेटा रीसेट करें</button>
+  </div>
+</div>
+
+<!-- GENERIC MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <p id="modalText"></p>
+    <div class="mrow" id="modalBtns"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== EDITABLE LINKS =====
+const KREATO_STORE_URL = "https://kreato.co.in/subhlabhdigital";
+const WHATSAPP_URL = "https://wa.me/919044593654";
+const INSTAGRAM_URL = "https://www.instagram.com/shubhlabh.digital?stkn=ZWZqbjd3MXFpbm1q";
+
+// ===== HELPERS =====
+const today = new Date().toISOString().slice(0,10);
+function ls(k,d){ const v = localStorage.getItem(k); return v===null? d : v; }
+function lsJSON(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v===null||v===undefined? d : v; }catch(e){ return d; } }
+
+// ===== TOAST =====
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+// ===== MODAL =====
+function showModal(text, buttons){
+  document.getElementById('modalText').textContent = text;
+  const wrap = document.getElementById('modalBtns');
+  wrap.innerHTML = '';
+  buttons.forEach(b=>{
+    const el = document.createElement('button');
+    el.className = 'btn ' + (b.primary? 'btn-primary':'btn-outline') + ' tap';
+    if(!b.primary){ el.style.color='var(--gold)'; el.style.borderColor='var(--gold)'; }
+    el.textContent = b.label;
+    el.onclick = ()=>{ closeModal(); if(b.action) b.action(); };
+    wrap.appendChild(el);
+  });
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('show'); }
+function infoModal(text){ showModal(text, [{label:'ठीक है', primary:true}]); }
+
+// ===== SHEETS =====
+function openSettings(){ renderSettingsCounts(); document.getElementById('settingsSheet').classList.add('show'); }
+function openMore(){ document.getElementById('moreSheet').classList.add('show'); }
+function closeSheet(id){ document.getElementById(id).classList.remove('show'); }
+function closeSheetBGid(e,id){ if(e.target.id===id) e.currentTarget.classList.remove('show'); }
+function showAbout(){ infoModal('Shubh Labh Digital एक डिजिटल भक्ति साथी है — रोज़ाना ज्ञान, सरल पूजा विधि, मंत्र जाप, धार्मिक कथाएँ और प्रीमियम PDF गाइड एक ही स्थान पर।'); }
+function askResetData(){
+  showModal('क्या आप अपनी saved progress और app data हटाना चाहते हैं?', [
+    {label:'नहीं'},
+    {label:'हाँ, हटाएँ', primary:true, action:()=>{ localStorage.clear(); toast('ऐप डेटा रीसेट हो गया'); setTimeout(()=>location.reload(), 700); }}
+  ]);
+}
+function renderSettingsCounts(){
+  document.getElementById('cntLiked').textContent = liked.length;
+  document.getElementById('cntBookmarks').textContent = bookmarks.length;
+  document.getElementById('cntJaap').textContent = history;
+}
+
+// ===== THEME =====
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeToggle').classList.toggle('on', t==='light');
+}
+let theme = ls('slb_theme','dark');
+applyTheme(theme);
+function toggleTheme(){
+  theme = theme==='dark' ? 'light' : 'dark';
+  localStorage.setItem('slb_theme', theme);
+  applyTheme(theme);
+}
+
+// ===== SCREEN NAV =====
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr-'+id).classList.add('active');
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.toggle('active', b.dataset.s===id));
+  window.scrollTo(0,0);
+  if(id==='gyaan') markTask('read');
+  if(id==='vidhi') markTask('vidhi');
+  if(id==='pdf') markTask('pdf');
+}
+
+// ===== DAILY TASKS =====
+let tasks = lsJSON('slb_tasks_'+today, {read:false,vidhi:false,jaap:false,pdf:false});
+function saveTasks(){ localStorage.setItem('slb_tasks_'+today, JSON.stringify(tasks)); }
+function markTask(key){ if(!tasks[key]){ tasks[key]=true; saveTasks(); } renderTasks(); }
+function renderTasks(){
+  [['read','task-read'],['vidhi','task-vidhi'],['jaap','task-jaap'],['pdf','task-pdf']].forEach(([k,id])=>{
+    const el = document.getElementById(id);
+    el.classList.toggle('done', !!tasks[k]);
+    el.querySelector('.dot').textContent = tasks[k] ? '✓' : {read:'1',vidhi:'2',jaap:'3',pdf:'4'}[k];
+  });
+}
+
+// ===== QUOTES (20) =====
+const quotes = [
+"जो हरि को भजता है, हरि उसकी सदा रक्षा करते हैं।",
+"कर्म करो, फल की चिंता ईश्वर पर छोड़ दो।",
+"धैर्य वह जड़ है जिससे सफलता का वृक्ष उगता है।",
+"अनुशासन के बिना कोई भी साधना अधूरी है।",
+"जिस हृदय में कृतज्ञता है, वहीं ईश्वर का वास है।",
+"सकारात्मक विचार ही आपकी सबसे बड़ी शक्ति है।",
+"भगवान उसी की सुनते हैं जो श्रद्धा से पुकारता है।",
+"मन की शांति ही सच्ची पूजा है।",
+"हर कठिनाई ईश्वर की एक परीक्षा है, घबराएं नहीं।",
+"सत्य और सेवा से बड़ा कोई धर्म नहीं।",
+"जो आज परिश्रम करता है, कल वही फल पाता है।",
+"आत्मविश्वास और भक्ति मिलकर चमत्कार करते हैं।",
+"जीवन की हर घटना ईश्वर की योजना का हिस्सा है।",
+"निरंतर प्रयास और श्रद्धा से हर बाधा पार होती है।",
+"जो बांटता है, वही सच में पाता है।",
+"सेवा से बड़ा कोई पुण्य नहीं होता।",
+"श्रद्धा से किया गया छोटा कार्य भी महान बन जाता है।",
+"आत्म-शांति ही सबसे बड़ी संपत्ति है।",
+"विश्वास वह दीपक है जो अंधकार में भी राह दिखाता है।",
+"जो क्षमा करना सीख लेता है, वह सच में विजयी है।"
+];
+function dayOfYear(){ const d=new Date(); const s=new Date(d.getFullYear(),0,0); return Math.floor((d-s)/864e5); }
+let gIdx = dayOfYear() % quotes.length;
+let favMode = false;
+let liked = lsJSON('slb_liked', []);
+function saveLiked(){ localStorage.setItem('slb_liked', JSON.stringify(liked)); }
+function currentList(){ return favMode ? quotes.map((q,i)=>i).filter(i=>liked.includes(i)) : quotes.map((q,i)=>i); }
+function renderGyaan(){
+  const list = currentList();
+  if(list.length===0){ document.getElementById('gyaanQuote').textContent='अभी कोई पसंदीदा विचार नहीं है।'; document.getElementById('gyaanCounter').textContent=''; document.getElementById('likeBtn').textContent='♡'; return; }
+  if(!list.includes(gIdx)) gIdx = list[0];
+  document.getElementById('gyaanQuote').textContent = quotes[gIdx];
+  const pos = list.indexOf(gIdx)+1;
+  document.getElementById('gyaanCounter').textContent = favMode ? `${pos} / ${list.length}` : `${gIdx+1} / ${quotes.length}`;
+  document.getElementById('likeBtn').textContent = liked.includes(gIdx) ? '♥' : '♡';
+  document.getElementById('likeBtn').classList.toggle('liked', liked.includes(gIdx));
+}
+function nextQuote(){ const list=currentList(); if(!list.length) return; let p=list.indexOf(gIdx); gIdx=list[(p+1)%list.length]; renderGyaan(); }
+function prevQuote(){ const list=currentList(); if(!list.length) return; let p=list.indexOf(gIdx); gIdx=list[(p-1+list.length)%list.length]; renderGyaan(); }
+function toggleLike(){ const i=liked.indexOf(gIdx); if(i>-1) liked.splice(i,1); else liked.push(gIdx); saveLiked(); renderGyaan(); }
+function toggleFavView(){ favMode=!favMode; document.getElementById('favToggleBtn').textContent = favMode? 'सभी विचार देखें' : 'मेरे पसंदीदा विचार'; renderGyaan(); }
+function shareQuote(){
+  const text = quotes[gIdx];
+  if(navigator.share){ navigator.share({text:text}).catch(()=>{}); }
+  else { navigator.clipboard?.writeText(text).then(()=>toast('विचार कॉपी हो गया।')).catch(()=>toast('विचार कॉपी हो गया।')); }
+}
+let lastHomeQ = -1;
+function refreshHomeQuote(){
+  let r; do{ r=Math.floor(Math.random()*quotes.length); }while(quotes.length>1 && r===lastHomeQ);
+  lastHomeQ=r;
+  document.getElementById('homeQuote').textContent = quotes[r];
+}
+
+// ===== POOJA VIDHI (5) =====
+const poojas = [
+{t:"गणेश पूजा विधि", intro:"विघ्नहर्ता श्री गणेश की पूजा हर शुभ कार्य से पहले की जाती है।", samagri:"दूर्वा, मोदक, सिंदूर, अक्षत, दीपक, अगरबत्ती", steps:["गणेश जी की मूर्ति/चित्र स्थापित करें","स्नान कराकर वस्त्र अर्पित करें","सिंदूर व अक्षत अर्पण करें","दूर्वा व मोदक भोग लगाएं","दीप और अगरबत्ती जलाएं","आरती करें और क्षमा प्रार्थना करें"], mantra:"ॐ गं गणपतये नमः", tip:"पूजा से पहले हाथ-पैर धोकर स्वच्छ मन से बैठें।"},
+{t:"लक्ष्मी पूजा विधि", intro:"धन और समृद्धि की देवी लक्ष्मी जी की पूजा घर में सुख-शांति लाती है।", samagri:"कमल का फूल, चावल, रोली, दीपक, मिठाई", steps:["पूजा स्थान को स्वच्छ करें","लक्ष्मी जी की मूर्ति स्थापित करें","रोली-अक्षत से तिलक करें","फूल और मिठाई अर्पित करें","घी का दीपक जलाएं","श्री सूक्त या आरती करें"], mantra:"ॐ श्रीं महालक्ष्म्यै नमः", tip:"शाम के समय पूजा करना विशेष शुभ माना जाता है।"},
+{t:"शिव पूजा विधि", intro:"भगवान शिव की आराधना मन की शांति और साहस प्रदान करती है।", samagri:"जल, बेलपत्र, दूध, अक्षत, धतूरा", steps:["शिवलिंग या चित्र पर जल अर्पित करें","दूध से अभिषेक करें","बेलपत्र चढ़ाएं","अक्षत और धतूरा अर्पित करें","दीप जलाकर आरती करें","शांत मन से मंत्र जाप करें"], mantra:"ॐ नमः शिवाय", tip:"सोमवार का दिन शिव पूजा के लिए विशेष फलदायी है।"},
+{t:"हनुमान पूजा विधि", intro:"संकटमोचन हनुमान जी की भक्ति भय और बाधाओं को दूर करती है।", samagri:"सिंदूर, चमेली तेल, लाल फूल, गुड़-चना", steps:["हनुमान जी की मूर्ति साफ करें","सिंदूर व तेल अर्पित करें","लाल फूल चढ़ाएं","गुड़-चना का भोग लगाएं","दीपक जलाकर हनुमान चालीसा पढ़ें","आरती से समापन करें"], mantra:"ॐ हनुमते नमः", tip:"मंगलवार व शनिवार को यह पूजा विशेष लाभकारी मानी जाती है।"},
+{t:"सूर्य देव को अर्घ्य विधि", intro:"सूर्य देव को अर्घ्य देने से ऊर्जा, स्वास्थ्य और आत्मविश्वास में वृद्धि होती है।", samagri:"तांबे का लोटा, जल, लाल फूल, अक्षत, रोली", steps:["सुबह जल्दी स्नान कर स्वच्छ वस्त्र पहनें","तांबे के लोटे में जल, अक्षत व लाल फूल डालें","सूर्य की ओर मुख करके खड़े हों","धीरे-धीरे जल अर्पित करें","सूर्य मंत्र का जाप करें","मन ही मन ईश्वर का धन्यवाद करें"], mantra:"ॐ सूर्याय नमः", tip:"सूर्योदय के समय अर्घ्य देना सबसे शुभ माना जाता है।"}
+];
+let completedPuja = lsJSON('slb_puja', []);
+function savePuja(){ localStorage.setItem('slb_puja', JSON.stringify(completedPuja)); }
+const accWrap = document.getElementById('accWrap');
+const poojaSvgs = [
+`<svg viewBox="0 0 300 110" width="100%" height="95"><path d="M150 15 a35 35 0 0 1 0 70 a35 35 0 0 1 0 -70" fill="none" stroke="#d4a24c" stroke-width="1.5" opacity=".7"/><ellipse cx="150" cy="75" rx="55" ry="14" fill="#8a2f18" opacity=".7"/><path d="M120 75 Q150 55 180 75" fill="none" stroke="#e8933a" stroke-width="2"/><circle cx="150" cy="45" r="10" fill="#e8933a" opacity=".8"/><path d="M40 90 Q70 70 100 90" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".7"/><path d="M200 90 Q230 70 260 90" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".7"/></svg>`,
+`<svg viewBox="0 0 300 110" width="100%" height="95"><path d="M150 90 C120 90 100 65 150 30 C200 65 180 90 150 90 Z" fill="none" stroke="#e07a9a" stroke-width="2"/><circle cx="110" cy="55" r="12" fill="#d4a24c" opacity=".7"/><circle cx="190" cy="55" r="12" fill="#d4a24c" opacity=".7"/><path d="M60 95 Q150 75 240 95" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".6"/></svg>`,
+`<svg viewBox="0 0 300 110" width="100%" height="95"><path d="M40 95 L100 30 L160 95 Z" fill="none" stroke="#8ea9c9" stroke-width="2" opacity=".7"/><line x1="150" y1="90" x2="150" y2="35" stroke="#d4a24c" stroke-width="2"/><line x1="136" y1="52" x2="164" y2="52" stroke="#d4a24c" stroke-width="2"/><path d="M225 25 a13 13 0 1 0 18 18 a17 17 0 1 1 -18 -18" fill="#f3e6d6" opacity=".8"/></svg>`,
+`<svg viewBox="0 0 300 110" width="100%" height="95"><path d="M30 95 L90 30 L150 95 Z" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".7"/><circle cx="220" cy="35" r="20" fill="#e8933a" opacity=".55"/><path d="M195 95 L195 40 L235 55 L195 65" fill="#e8933a" stroke="#d4a24c" stroke-width="1.5" opacity=".85"/></svg>`,
+`<svg viewBox="0 0 300 110" width="100%" height="95"><circle cx="150" cy="45" r="22" fill="#e8933a" opacity=".55"/><path d="M20 95 Q150 75 280 95" fill="none" stroke="#8ea9c9" stroke-width="2" opacity=".6"/><path d="M150 68 L150 90" stroke="#d4a24c" stroke-width="2"/><ellipse cx="150" cy="93" rx="14" ry="6" fill="#d4a24c" opacity=".7"/></svg>`
+];
+poojas.forEach((p,i)=>{
+  const div = document.createElement('div'); div.className='card acc';
+  div.innerHTML = `<div class="story-art">${poojaSvgs[i]}</div><div class="acc-head tap" onclick="toggleAcc(${i})"><span>${p.t}</span><span class="chk" id="chk${i}"></span></div>
+  <div class="acc-body"><div class="acc-inner">
+    <p style="font-size:13.5px; opacity:.85;">${p.intro}</p>
+    <h4>आवश्यक सामग्री</h4><p style="font-size:14px;">${p.samagri}</p>
+    <h4>विधि</h4><ol>${p.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    <div class="mantra">${p.mantra}</div>
+    <h4>शुभ सुझाव</h4><p style="font-size:14px;">${p.tip}</p>
+    <button class="btn btn-primary tap done-btn" onclick="completePuja(${i})">पूजा पूर्ण करें</button>
+  </div></div>`;
+  accWrap.appendChild(div);
+});
+function toggleAcc(i){
+  document.querySelectorAll('.acc').forEach((el,idx)=>{ if(idx!==i) el.classList.remove('open'); });
+  accWrap.children[i].classList.toggle('open');
+}
+function completePuja(i){ if(!completedPuja.includes(i)){ completedPuja.push(i); savePuja(); renderPujaChecks(); } toast('आपकी पूजा मंगलमय हो 🙏'); }
+function renderPujaChecks(){ poojas.forEach((p,i)=>{ document.getElementById('chk'+i).textContent = completedPuja.includes(i) ? '✓' : ''; }); }
+
+// ===== JAAP =====
+const ring = document.getElementById('ring');
+const CIRC = 2*Math.PI*90;
+ring.style.strokeDasharray = CIRC;
+let count = parseInt(ls('slb_count','0'),10);
+let mantra = ls('slb_mantra','ॐ नमः शिवाय');
+let history = parseInt(ls('slb_jaap_history_'+today,'0'),10);
+document.getElementById('mantraSelect').value = mantra;
+document.getElementById('mantraTop').textContent = mantra;
+function renderCount(){
+  document.getElementById('countText').textContent = count;
+  const pct = Math.min(count/108,1);
+  ring.style.strokeDashoffset = CIRC*(1-pct);
+  document.getElementById('goalPct').textContent = Math.round(pct*100)+'%';
+  document.getElementById('todayCount').textContent = history;
+}
+function milestoneMsg(c){
+  if(c===11) return "11 जाप पूर्ण हुए। निरंतरता बनाए रखें।";
+  if(c===21) return "21 जाप पूर्ण हुए। मन शांत रखें।";
+  if(c===51) return "51 जाप पूर्ण हुए। आपकी साधना सुंदर है।";
+  if(c===108) return "108 जाप पूर्ण हुए। हर हर महादेव। 🙏";
+  return "";
+}
+function doJaap(){
+  count++; history++;
+  localStorage.setItem('slb_count', count);
+  localStorage.setItem('slb_jaap_history_'+today, history);
+  renderCount();
+  if(history>=11) markTask('jaap');
+  const m = milestoneMsg(count);
+  if(m){ document.getElementById('milestoneMsg').textContent = m; toast(m); }
+  if(count===108){ confetti(); }
+}
+function changeCount(d){ count = Math.max(0, count+d); localStorage.setItem('slb_count', count); renderCount(); }
+function askReset(){
+  showModal('क्या आप जाप काउंटर रीसेट करना चाहते हैं?', [
+    {label:'नहीं'},
+    {label:'हाँ, रीसेट करें', primary:true, action:()=>{ count=0; localStorage.setItem('slb_count',0); renderCount(); document.getElementById('milestoneMsg').textContent=''; }}
+  ]);
+}
+function changeMantra(){ mantra=document.getElementById('mantraSelect').value; localStorage.setItem('slb_mantra', mantra); document.getElementById('mantraTop').textContent=mantra; }
+function confetti(){
+  const petals=['🌸','🌺','🌼','🪷'];
+  for(let i=0;i<24;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div'); p.className='petal';
+      p.textContent = petals[Math.floor(Math.random()*petals.length)];
+      p.style.left = Math.random()*100+'vw';
+      p.style.animationDuration = (2.5+Math.random()*1.5)+'s';
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(), 4200);
+    }, i*60);
+  }
+}
+
+// ===== KATHAYEIN =====
+const storySvgs = [
+`<svg viewBox="0 0 300 130" width="100%" height="110"><rect width="300" height="130" fill="none"/><path d="M60 110 L60 60 L90 30 L120 60 L120 110 Z" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".8"/><circle cx="90" cy="18" r="8" fill="#e8933a" opacity=".85"/><path d="M150 110 C150 80 210 80 210 110" fill="none" stroke="#d4a24c" stroke-width="2"/><ellipse cx="230" cy="70" rx="16" ry="10" fill="#e8933a" opacity=".5"/><ellipse cx="230" cy="70" rx="9" ry="16" fill="#d4a24c" opacity=".4"/></svg>`,
+`<svg viewBox="0 0 300 130" width="100%" height="110"><path d="M0 100 Q40 80 80 100 T160 100 T240 100 T300 100" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".7"/><path d="M0 115 Q40 95 80 115 T160 115 T240 115 T300 115" fill="none" stroke="#e8933a" stroke-width="2" opacity=".6"/><path d="M150 100 L140 30 L160 30 Z" fill="none" stroke="#d4a24c" stroke-width="2"/><path d="M110 90 Q150 50 190 90" fill="none" stroke="#e8933a" stroke-width="2.5" opacity=".8"/><circle cx="150" cy="35" r="6" fill="#e8933a"/></svg>`,
+`<svg viewBox="0 0 300 130" width="100%" height="110"><path d="M40 110 L110 40 L180 110 Z" fill="none" stroke="#8ea9c9" stroke-width="2" opacity=".7"/><path d="M120 110 L190 55 L260 110 Z" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".6"/><path d="M225 30 a15 15 0 1 0 20 20 a20 20 0 1 1 -20 -20" fill="#f3e6d6" opacity=".8"/><line x1="150" y1="105" x2="150" y2="65" stroke="#d4a24c" stroke-width="2"/><line x1="138" y1="78" x2="162" y2="78" stroke="#d4a24c" stroke-width="2"/></svg>`,
+`<svg viewBox="0 0 300 130" width="100%" height="110"><path d="M30 110 L90 40 L150 110 Z" fill="none" stroke="#d4a24c" stroke-width="2" opacity=".7"/><circle cx="230" cy="45" r="22" fill="#e8933a" opacity=".55"/><path d="M195 110 L195 55 L235 70 L195 80" fill="#e8933a" stroke="#d4a24c" stroke-width="1.5" opacity=".85"/><line x1="195" y1="110" x2="195" y2="55" stroke="#8a6a34" stroke-width="2"/></svg>`,
+`<svg viewBox="0 0 300 130" width="100%" height="110"><circle cx="150" cy="70" r="34" fill="none" stroke="#d4a24c" stroke-width="2"/><g stroke="#d4a24c" stroke-width="2">${Array.from({length:8}).map((_,k)=>`<line x1="150" y1="70" x2="${150+34*Math.cos(k*Math.PI/4)}" y2="${70+34*Math.sin(k*Math.PI/4)}"/>`).join('')}</g><path d="M20 115 Q150 95 280 115" fill="none" stroke="#e8933a" stroke-width="2" opacity=".7"/><circle cx="150" cy="70" r="6" fill="#e8933a"/></svg>`
+];
+const stories = [
+{t:"गणेश जी और माता पार्वती की कथा", paras:["माता पार्वती ने स्नान के समय अपने शरीर के उबटन से एक बालक की रचना की और उसे द्वार पर पहरा देने को कहा।","जब भगवान शिव आए तो बालक ने उन्हें भी रोक दिया, जिससे विवाद हुआ। बाद में सच्चाई जानकर शिव जी ने बालक को गजमुख देकर पुनर्जीवित किया और उसे प्रथम पूज्य होने का वरदान दिया।"], shiksha:"शिक्षा: कर्तव्यनिष्ठा और आज्ञापालन का सम्मान हर परिस्थिति में होना चाहिए।"},
+{t:"समुद्र मंथन की कथा", paras:["देवताओं और असुरों ने अमृत प्राप्ति के लिए मिलकर समुद्र मंथन किया, जिसमें मंदार पर्वत को मथनी और वासुकि नाग को रस्सी बनाया गया।","मंथन से पहले विष निकला, जिसे भगवान शिव ने कंठ में धारण कर संसार की रक्षा की। अंत में अमृत सहित कई रत्न प्राप्त हुए।"], shiksha:"शिक्षा: बड़े लक्ष्य की प्राप्ति में धैर्य और त्याग आवश्यक है।"},
+{t:"शिव जी और नीलकंठ की कथा", paras:["समुद्र मंथन के समय निकले हलाहल विष से सृष्टि को बचाने के लिए भगवान शिव ने वह विष पी लिया।","माता पार्वती ने विष को कंठ में ही रोक लिया, जिससे शिव जी का कंठ नीला पड़ गया और वे नीलकंठ कहलाए।"], shiksha:"शिक्षा: सबके कल्याण के लिए स्वयं कष्ट सहना सच्चे परोपकार की पहचान है।"},
+{t:"हनुमान जी की भक्ति कथा", paras:["हनुमान जी ने अपने पूरे जीवन में श्रीराम की निःस्वार्थ सेवा और भक्ति की, बिना किसी फल की इच्छा के।","संकट के हर क्षण में उन्होंने अपनी शक्ति और बुद्धि का उपयोग धर्म की रक्षा हेतु किया, जिससे वे भक्ति और शक्ति के प्रतीक बने।"], shiksha:"शिक्षा: निःस्वार्थ सेवा और दृढ़ भक्ति से हर कठिनाई पार की जा सकती है।"},
+{t:"सत्य और धर्म का संदेश", paras:["प्राचीन कथाओं में बार-बार यह संदेश मिलता है कि सत्य और धर्म की राह कठिन होते हुए भी अंततः विजयी होती है।","जो व्यक्ति अपने कर्तव्यों का पालन धैर्य और ईमानदारी से करता है, उसे जीवन में शांति और सम्मान प्राप्त होता है।"], shiksha:"शिक्षा: सत्य और धर्म का मार्ग ही स्थायी सुख की ओर ले जाता है।"}
+];
+let bookmarks = lsJSON('slb_bookmarks', []);
+function saveBookmarks(){ localStorage.setItem('slb_bookmarks', JSON.stringify(bookmarks)); }
+const storyWrap = document.getElementById('storyWrap');
+stories.forEach((s,i)=>{
+  const div = document.createElement('div'); div.className='card story-card';
+  div.innerHTML = `<div class="story-art">${storySvgs[i]}</div>
+  <h3>${s.t}</h3><p>${s.paras[0]}</p>
+  <div class="story-more" id="more${i}" style="max-height:0; overflow:hidden; transition:max-height .35s ease;">
+    ${s.paras.slice(1).map(p=>`<p>${p}</p>`).join('')}
+    <div class="story-shiksha">${s.shiksha}</div>
+  </div>
+  <button class="fav-toggle tap" style="margin:10px auto 0;" onclick="toggleStoryMore(${i}, this)">पूरा पढ़ें</button>
+  <div class="story-actions">
+    <button class="icbtn tap" id="bm${i}" onclick="toggleBookmark(${i})">🔖</button>
+    <button class="icbtn tap" onclick="shareStory(${i})">⤴</button>
+  </div>
+  <div class="cta-card card" style="margin-top:14px;">
+    <a class="btn btn-primary tap" href="https://kreato.co.in/subhlabhdigital" target="_blank" rel="noopener noreferrer">विस्तृत कथा PDF में पढ़ें</a>
+  </div>`;
+  storyWrap.appendChild(div);
+});
+function toggleStoryMore(i, btn){
+  const el = document.getElementById('more'+i);
+  const open = el.style.maxHeight !== '0px' && el.style.maxHeight !== '';
+  el.style.maxHeight = open ? '0' : '600px';
+  btn.textContent = open ? 'पूरा पढ़ें' : 'संक्षेप में देखें';
+}
+function toggleBookmark(i){
+  const idx = bookmarks.indexOf(i);
+  if(idx>-1) bookmarks.splice(idx,1); else bookmarks.push(i);
+  saveBookmarks(); renderBookmarks();
+}
+function renderBookmarks(){ stories.forEach((s,i)=>{ const b=document.getElementById('bm'+i); b.classList.toggle('liked', bookmarks.includes(i)); }); }
+function shareStory(i){
+  const text = stories[i].t + " - " + stories[i].paras.join(' ');
+  if(navigator.share){ navigator.share({text:text}).catch(()=>{}); }
+  else { navigator.clipboard?.writeText(text).then(()=>toast('कथा कॉपी हो गई।')).catch(()=>toast('कथा कॉपी हो गई।')); }
+}
+
+// ===== PDF STORE (5) =====
+const pdfCovers = [
+`<svg viewBox="0 0 64 64" width="64" height="64"><rect x="10" y="6" width="44" height="52" rx="6" fill="#fbf3e6"/><circle cx="32" cy="24" r="10" fill="none" stroke="#5c1016" stroke-width="2"/><path d="M32 14 L32 6" stroke="#5c1016" stroke-width="2"/><path d="M20 44 h24" stroke="#d4a24c" stroke-width="2"/><path d="M20 50 h16" stroke="#d4a24c" stroke-width="2"/></svg>`,
+`<svg viewBox="0 0 64 64" width="64" height="64"><rect x="10" y="6" width="44" height="52" rx="6" fill="#fbf3e6"/><path d="M32 48 C20 40 18 26 32 18 C46 26 44 40 32 48 Z" fill="none" stroke="#5c1016" stroke-width="2"/><path d="M20 14 h24" stroke="#d4a24c" stroke-width="2"/></svg>`,
+`<svg viewBox="0 0 64 64" width="64" height="64"><rect x="10" y="6" width="44" height="52" rx="6" fill="#fbf3e6"/><circle cx="32" cy="30" r="14" fill="none" stroke="#d4a24c" stroke-width="1.5"/><circle cx="32" cy="30" r="4" fill="#5c1016"/><g stroke="#5c1016" stroke-width="1.5">${Array.from({length:8}).map((_,k)=>`<line x1="32" y1="30" x2="${32+14*Math.cos(k*Math.PI/4)}" y2="${30+14*Math.sin(k*Math.PI/4)}"/>`).join('')}</g></svg>`,
+`<svg viewBox="0 0 64 64" width="64" height="64"><rect x="10" y="6" width="44" height="52" rx="6" fill="#fbf3e6"/><path d="M16 46 q16 -22 32 0" fill="none" stroke="#5c1016" stroke-width="2"/><circle cx="32" cy="20" r="6" fill="#d4a24c"/></svg>`,
+`<svg viewBox="0 0 64 64" width="64" height="64"><rect x="10" y="6" width="44" height="52" rx="6" fill="#fbf3e6"/><path d="M14 40 h36" stroke="#d4a24c" stroke-width="2"/><circle cx="20" cy="40" r="4" fill="#5c1016"/><circle cx="32" cy="40" r="4" fill="#5c1016"/><circle cx="44" cy="40" r="4" fill="#5c1016"/><path d="M32 40 V16" stroke="#5c1016" stroke-width="2"/><circle cx="32" cy="14" r="4" fill="#e8933a"/></svg>`
+];
+const pdfProducts = [
+{t:"सुबह की भक्ति दिनचर्या", benefits:["सुबह की संपूर्ण भक्ति दिनचर्या","सरल भाषा में चरणबद्ध मार्गदर्शन","रोज़ पालन हेतु आसान अभ्यास"]},
+{t:"सरल पूजा विधि गाइड", benefits:["सभी प्रमुख देवी-देवताओं की पूजा विधि","सामग्री सूची और मंत्र सहित","घर पर आसानी से उपयोग हेतु"]},
+{t:"108 मंत्र संग्रह", benefits:["108 शक्तिशाली मंत्रों का संग्रह","हर मंत्र का सरल अर्थ","नियमित जाप के लिए उपयुक्त"]},
+{t:"धार्मिक कथाएँ संग्रह", benefits:["प्रेरक धार्मिक कथाओं का संकलन","हर कथा से शिक्षा सहित","परिवार के साथ पढ़ने योग्य"]},
+{t:"21 दिन की भक्ति साधना योजना", benefits:["21 दिन की चरणबद्ध साधना योजना","रोज़ाना सरल कार्य और मंत्र","अनुशासन व निरंतरता हेतु सहायक"]}
+];
+const pdfWrap = document.getElementById('pdfWrap');
+pdfProducts.forEach((p,i)=>{
+  const div = document.createElement('div'); div.className='card pcard'; div.id='pc'+i;
+  div.innerHTML = `<div class="cover">${pdfCovers[i]}</div><h3>${p.t}</h3><div class="soon">Digital PDF Guide</div><div class="price">₹99</div><div class="soon">भक्ति साधना के लिए उपयोगी</div>
+  <div class="btnrow"><button class="btn btn-outline tap" style="color:var(--gold); border-color:var(--gold);" onclick="togglePdf(${i})">क्या मिलेगा?</button><a class="btn btn-primary tap" href="https://kreato.co.in/subhlabhdigital" target="_blank" rel="noopener noreferrer">Kreato Store पर खरीदें</a></div>
+  <div class="details"><ul class="benefits">${p.benefits.map(b=>`<li>${b}</li>`).join('')}</ul><p style="font-size:11.5px; opacity:.7; margin-top:6px;">PDF प्राप्त करने के लिए Kreato Store पर जाएँ।</p></div>`;
+  pdfWrap.appendChild(div);
+});
+function togglePdf(i){ document.getElementById('pc'+i).classList.toggle('open'); }
+
+function shareApp(){
+  const url = location.href;
+  if(navigator.share){ navigator.share({title:'Shubh Labh Digital', url:url}).catch(()=>{}); }
+  else { navigator.clipboard?.writeText(url).then(()=>toast('App link कॉपी हो गया।')).catch(()=>toast('App link कॉपी हो गया।')); }
+}
+
+// ===== SPARKLES =====
+const sparkWrap = document.getElementById('sparkles');
+for(let i=0;i<18;i++){
+  const s = document.createElement('div'); s.className='sparkle';
+  s.style.left = Math.random()*100+'vw'; s.style.top = Math.random()*100+'vh'; s.style.animationDelay=(Math.random()*3)+'s';
+  sparkWrap.appendChild(s);
+}
+
+// ===== INIT =====
+renderGyaan();
+refreshHomeQuote();
+renderCount();
+renderTasks();
+renderPujaChecks();
+renderBookmarks();
+</script>
+</body>
+</html>
