@@ -1,0 +1,20 @@
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open('pwa-cache').then(cache => {
+      return cache.addAll([
+        '/',
+        '/shubh-labh-digital/',
+        '/shubh-labh-digital/index.html',
+        '/shubh-labh-digital/manifest.json'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
+});
